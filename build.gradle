@@ -1,0 +1,95 @@
+buildscript {
+    ext.kotlin_version = '1.3.50'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "org.jmailen.kotlinter" version "2.1.1"
+}
+
+kotlinter {
+    indentSize = 2
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+
+group = 'uk.ac.ic.doc'
+version = '1.0.0'
+
+description = """Weather Exercise"""
+
+sourceCompatibility = 1.10
+targetCompatibility = 1.10
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
+    testCompile group: 'org.jmock', name: 'jmock-junit4', version: '2.8.3'
+    compile files('lib/weather.jar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+
+test {
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+   
+checkstyle {
+    toolVersion = '8.11'
+    configFile rootProject.file('config/checkstyle/checkstyle.xml')
+    maxErrors = 0
+    maxWarnings = 0
+    sourceSets = [project.sourceSets.main]
+}
+
+jacoco {
+    toolVersion = '0.8.4'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/reports/coverage")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification

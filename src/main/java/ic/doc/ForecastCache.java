@@ -1,15 +1,16 @@
 package ic.doc;
 
 import com.weather.Forecast;
+import java.util.Map;
 
 public class ForecastCache implements Cache {
 
-  private CacheMap cache;
+  private Map cache;
   private final int cacheCapacity = 10;
 
-  public ForecastCache() {
+  public ForecastCache(Map cache) {
 
-    this.cache = new CacheMap(cacheCapacity);
+    this.cache = cache;
   }
 
   @Override
@@ -33,5 +34,9 @@ public class ForecastCache implements Cache {
       return null;
     }
     return (Forecast)((CacheMap)cache.get(region)).get(day);
+  }
+
+  public int getCacheSize() {
+    return cache.size();
   }
 }

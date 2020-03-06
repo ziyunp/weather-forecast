@@ -1,16 +1,27 @@
 package ic.doc;
 
 import com.weather.Forecast;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * This class is a custom cache to store forecast queries. It limits the size of the cache by
+ * removing the eldest entry. The addToCache and getFromCache method perform checks on whether the
+ * given keys exist in the cache before calling to Map's 'put' and 'get' methods.
+ */
 public class ForecastCache implements Cache {
 
-  private Map<String, Map<String, Forecast>> cache;
+  private LinkedHashMap<String, LinkedHashMap<String, Forecast>> cache;
   private final int cacheCapacity = 10;
 
-  public ForecastCache(Map cache) {
+  public ForecastCache() {
 
-    this.cache = cache;
+    this.cache =
+        new LinkedHashMap<>(cacheCapacity) {
+          protected boolean removeEldestEntry(Map.Entry eldest) {
+            return this.size() > cacheCapacity;
+          }
+        };
   }
 
   @Override
@@ -19,10 +30,12 @@ public class ForecastCache implements Cache {
     String day = (String) keys[1];
 
     if (!cache.containsKey(region)) {
-      cache.put(region, new CacheMap(cacheCapacity));
+      cache.put(
+          region,
+          new LinkedHashMap<>());
     }
-    if (!((CacheMap) cache.get(region)).containsKey(day)) {
-      ((CacheMap) cache.get(region)).put(day, forecast);
+    if (!cache.get(region).containsKey(day)) {
+      cache.get(region).put(day, (Forecast)forecast);
     }
   }
 
@@ -30,10 +43,10 @@ public class ForecastCache implements Cache {
   public Forecast getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];
-    if (!cache.containsKey(region) || !((CacheMap) cache.get(region)).containsKey(day)) {
+    if (!cache.containsKey(region) || !cache.get(region).containsKey(day)) {
       return null;
     }
-    return (Forecast) ((CacheMap) cache.get(region)).get(day);
+    return cache.get(region).get(day);
   }
 
   public int getCacheSize() {

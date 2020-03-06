@@ -1,15 +1,17 @@
 package ic.doc;
 
 import com.weather.Forecast;
-import com.weather.Forecaster;
 
+/**
+ * This is the main client that users will be interacting with
+ */
 public class WeatherForecast {
 
-  private final ForecasterProxy forecaster =
+  private final WeatherForecaster forecaster =
       new ForecasterProxy(
-          new ForecasterAdapter(new Forecaster()), new ForecastCache(new CacheMap(10)));
+          new ForecasterAdapter(), new ForecastCache());
 
   public Forecast getForecastFor(String region, String day) {
-    return forecaster.forecastFor(region, day);
+    return forecaster.getForecast(region, day);
   }
 }

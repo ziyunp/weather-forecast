@@ -6,15 +6,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import com.weather.Forecast;
-import java.util.HashMap;
 import org.junit.Test;
 
 public class ForecastCacheTest {
-  ForecastCache forecastCache = new ForecastCache(new HashMap());
+  ForecastCache forecastCache = new ForecastCache();
 
   @Test
   public void constructorCreatesAnEmptyCache() {
-    ForecastCache cache = new ForecastCache(new HashMap());
+    ForecastCache cache = new ForecastCache();
     assertThat(cache.getCacheSize(), is(0));
   }
 

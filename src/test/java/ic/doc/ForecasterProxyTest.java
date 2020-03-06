@@ -9,33 +9,15 @@ import org.junit.Test;
 public class ForecasterProxyTest {
   @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 
-  final String lowerCaseRegion = "london";
-  final String lowerCaseDay = "monday";
-  final String upperCaseRegion = "LONDON";
-  final String upperCaseDay = "MONDAY";
-  final String[] keys = {upperCaseRegion, upperCaseDay};
+  final String region = "LONDON";
+  final String day = "MONDAY";
+  final String[] keys = {region, day};
   final Forecast forecast = new Forecast("Mock summary", 25) {};
 
   WeatherForecaster forecaster = context.mock(WeatherForecaster.class);
   Cache cache = context.mock(Cache.class);
 
   ForecasterProxy forecasterProxy = new ForecasterProxy(forecaster, cache);
-
-  @Test
-  public void queryInLowerCaseWillBeConvertedToUpperCase() {
-
-    context.checking(
-        new Expectations() {
-          {
-            exactly(1).of(cache).getFromCache(keys);
-            will(returnValue(null));
-            exactly(1).of(forecaster).forecastFor(upperCaseRegion, upperCaseDay);
-            will(returnValue(forecast));
-            exactly(1).of(cache).addToCache(keys, forecast);
-          }
-        });
-    forecasterProxy.forecastFor(lowerCaseRegion, lowerCaseDay);
-  }
 
   @Test
   public void queryToForecasterWhenNotInCache() {
@@ -45,12 +27,12 @@ public class ForecasterProxyTest {
           {
             exactly(1).of(cache).getFromCache(keys);
             will(returnValue(null));
-            exactly(1).of(forecaster).forecastFor(upperCaseRegion, upperCaseDay);
+            exactly(1).of(forecaster).getForecast(region, day);
             will(returnValue(forecast));
             exactly(1).of(cache).addToCache(keys, forecast);
           }
         });
-    forecasterProxy.forecastFor(upperCaseRegion, upperCaseDay);
+    forecasterProxy.getForecast(region, day);
   }
 
   @Test
@@ -64,6 +46,6 @@ public class ForecasterProxyTest {
           }
         });
 
-    forecasterProxy.forecastFor(upperCaseRegion, upperCaseDay);
+    forecasterProxy.getForecast(region, day);
   }
 }

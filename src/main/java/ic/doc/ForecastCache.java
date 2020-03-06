@@ -21,8 +21,8 @@ public class ForecastCache implements Cache {
     if (!cache.containsKey(region)) {
       cache.put(region, new CacheMap(cacheCapacity));
     }
-    if (!((CacheMap)cache.get(region)).containsKey(day)) {
-      ((CacheMap)cache.get(region)).put(day, forecast);
+    if (!((CacheMap) cache.get(region)).containsKey(day)) {
+      ((CacheMap) cache.get(region)).put(day, forecast);
     }
   }
 
@@ -30,10 +30,10 @@ public class ForecastCache implements Cache {
   public Forecast getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];
-    if (!cache.containsKey(region) || !((CacheMap)cache.get(region)).containsKey(day)) {
+    if (!cache.containsKey(region) || !((CacheMap) cache.get(region)).containsKey(day)) {
       return null;
     }
-    return (Forecast)((CacheMap)cache.get(region)).get(day);
+    return (Forecast) ((CacheMap) cache.get(region)).get(day);
   }
 
   public int getCacheSize() {

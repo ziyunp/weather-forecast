@@ -1,12 +1,15 @@
 package ic.doc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import com.weather.Forecast;
 import org.junit.Test;
 
 public class WeatherForecastTest {
   final WeatherForecast forecaster = new WeatherForecast();
+
   @Test
   public void canGetForecastByRegionAndDayWithStringsOfAnyLetterCase() {
 
@@ -35,7 +38,7 @@ public class WeatherForecastTest {
     try {
       forecaster.getForecastFor("London", "Today");
       fail("Day not available in Day.class should raise IllegalArgumentException");
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
 
     }
   }

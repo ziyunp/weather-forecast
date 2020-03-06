@@ -1,13 +1,12 @@
 package ic.doc;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
 public class CacheMapTest {
   final int capacity = 2;
-
 
   @Test
   public void constructorInstantiatesAnEmptyCache() {

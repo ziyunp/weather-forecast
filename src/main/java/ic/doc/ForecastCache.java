@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ForecastCache implements Cache {
 
-  private Map cache;
+  private Map<String, Map<String, Forecast>> cache;
   private final int cacheCapacity = 10;
 
   public ForecastCache(Map cache) {

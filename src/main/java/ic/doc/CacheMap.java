@@ -4,14 +4,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CacheMap extends LinkedHashMap {
-  private static int capacity = 10;
-  private Map<String, Object> cache;
+  private final int capacity;
 
-  public CacheMap() {
-    this.cache = new LinkedHashMap<>(capacity);
+  public CacheMap (int capacity) {
+    this.capacity = capacity;
   }
 
   protected boolean removeEldestEntry(Map.Entry eldest) {
-    return cache.size() > capacity;
+    return this.size() > capacity;
   }
+
 }

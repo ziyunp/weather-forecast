@@ -1,15 +1,15 @@
 package ic.doc;
 
 import com.weather.Forecast;
-import java.util.Map;
 
 public class ForecastCache implements Cache {
 
-  private Map<String, Map<String, Forecast>> cache;
+  private CacheMap cache;
+  private final int cacheCapacity = 10;
 
   public ForecastCache() {
 
-    this.cache = new CacheMap();
+    this.cache = new CacheMap(cacheCapacity);
   }
 
   @Override
@@ -18,10 +18,10 @@ public class ForecastCache implements Cache {
     String day = (String) keys[1];
 
     if (!cache.containsKey(region)) {
-      cache.put(region, new CacheMap());
+      cache.put(region, new CacheMap(cacheCapacity));
     }
-    if (!cache.get(region).containsKey(day)) {
-      ((Map)cache.get(region)).put(day, forecast);
+    if (!((CacheMap)cache.get(region)).containsKey(day)) {
+      ((CacheMap)cache.get(region)).put(day, forecast);
     }
   }
 
@@ -29,9 +29,9 @@ public class ForecastCache implements Cache {
   public Forecast getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];
-    if (!cache.containsKey(region) || !cache.get(region).containsKey(day)) {
+    if (!cache.containsKey(region) || !((CacheMap)cache.get(region)).containsKey(day)) {
       return null;
     }
-    return (Forecast)((Map)cache.get(region)).get(day);
+    return (Forecast)((CacheMap)cache.get(region)).get(day);
   }
 }

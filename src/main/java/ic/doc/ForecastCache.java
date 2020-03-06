@@ -3,7 +3,7 @@ package ic.doc;
 import com.weather.Forecast;
 import java.util.Map;
 
-public class ForecastCache {
+public class ForecastCache implements Cache {
 
   private Map<String, Map<String, Forecast>> cache;
 
@@ -12,6 +12,7 @@ public class ForecastCache {
     this.cache = new CacheMap();
   }
 
+  @Override
   public void addToCache(Object[] keys, Object forecast) {
     String region = (String) keys[0];
     String day = (String) keys[1];
@@ -24,6 +25,7 @@ public class ForecastCache {
     }
   }
 
+  @Override
   public Forecast getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];

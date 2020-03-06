@@ -14,5 +14,4 @@ public class CacheMap extends LinkedHashMap {
   protected boolean removeEldestEntry(Map.Entry eldest) {
     return cache.size() > capacity;
   }
-
 }

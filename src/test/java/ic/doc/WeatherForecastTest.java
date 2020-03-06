@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import com.weather.Forecast;
 import org.junit.Test;
 
-public class WeatherForecasterTest {
-  final WeatherForecaster forecaster = new WeatherForecaster();
+public class WeatherForecastTest {
+  final WeatherForecast forecaster = new WeatherForecast();
   @Test
   public void canGetForecastByRegionAndDayWithStringsOfAnyLetterCase() {
 

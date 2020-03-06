@@ -1,14 +1,8 @@
 package ic.doc;
 
-
 import com.weather.Forecast;
 
-public class WeatherForecaster {
+public interface WeatherForecaster {
 
-  private final ForecastService forecaster = new ForecastService();
-
-  public Forecast getForecastFor(String region, String day) {
-    return forecaster.forecastFor(region, day);
-  }
-
+  Forecast forecastFor(String region, String day);
 }

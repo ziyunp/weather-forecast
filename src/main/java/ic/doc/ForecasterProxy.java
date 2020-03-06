@@ -1,18 +1,15 @@
 package ic.doc;
 
-import com.weather.Day;
 import com.weather.Forecast;
-import com.weather.Forecaster;
-import com.weather.Region;
 
-public class ForecastService {
+public class ForecasterProxy {
 
-  private final Forecaster forecaster;
-  private final ForecastCache cache;
+  private final WeatherForecaster forecaster;
+  private final Cache cache;
 
-  public ForecastService() {
-    this.forecaster = new Forecaster();
-    this.cache = new ForecastCache();
+  public ForecasterProxy(WeatherForecaster forecaster, Cache cache) {
+    this.forecaster = forecaster;
+    this.cache = cache;
   }
 
   public Forecast forecastFor(String region, String day) {
@@ -27,7 +24,7 @@ public class ForecastService {
 
     if (cachedForecast == null) {
       // If query is not in cache, make a query to forecaster, then add to cache
-      Forecast fetchedForecast = forecaster.forecastFor(Region.valueOf(region), Day.valueOf(day));
+      Forecast fetchedForecast = forecaster.forecastFor(region, day);
       cache.addToCache(keys, fetchedForecast);
       return fetchedForecast;
     }

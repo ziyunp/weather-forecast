@@ -10,25 +10,26 @@ public class WeatherForecastTest {
   @Test
   public void canGetForecastByRegionAndDayWithStringsOfAnyLetterCase() {
 
-    Forecast londonForecast = forecaster.getForecastFor("London", "Monday");
-    System.out.println("London outlook: " + londonForecast.summary());
-    System.out.println("London temperature: " + londonForecast.temperature());
+    Forecast londonForecast = forecaster.getForecastFor("London", "monDAy");
+    assertNotNull(londonForecast);
+    assertNotNull(londonForecast.summary());
+    assertNotNull(londonForecast.temperature());
 
     Forecast edinburghForecast = forecaster.getForecastFor("edinburgh", "SUNDAY");
-
-    System.out.println("Edinburgh outlook: " + edinburghForecast.summary());
-    System.out.println("Edinburgh temperature: " + edinburghForecast.temperature());
-
+    assertNotNull(edinburghForecast);
+    assertNotNull(edinburghForecast.summary());
+    assertNotNull(edinburghForecast.temperature());
   }
+
   @Test
   public void exceptionRaisedWhenGetForecastByUnavailableRegion() {
     try {
       forecaster.getForecastFor("York", "Monday");
       fail("Region not available in Region.class should raise IllegalArgumentException");
     } catch (IllegalArgumentException e) {
-
     }
   }
+
   @Test
   public void exceptionRaisedWhenGetForecastByUnavailableDay() {
     try {
@@ -37,5 +38,12 @@ public class WeatherForecastTest {
     } catch(IllegalArgumentException e) {
 
     }
+  }
+
+  @Test
+  public void twoIdenticalConsecutiveQueriesShouldReturnSameForecast() {
+    Forecast walesForecast1 = forecaster.getForecastFor("Wales", "Tuesday");
+    Forecast walesForecast2 = forecaster.getForecastFor("Wales", "Tuesday");
+    assertEquals(walesForecast1, walesForecast2);
   }
 }

@@ -15,8 +15,8 @@ public class ForecasterProxy {
   public Forecast forecastFor(String region, String day) {
 
     // Convert any given strings to uppercase
-    region = region.toUpperCase();
-    day = day.toUpperCase();
+    region = toCompatibleFormat(region);
+    day = toCompatibleFormat(day);
 
     // Try querying from cache
     String[] keys = {region, day};
@@ -31,4 +31,8 @@ public class ForecasterProxy {
     return cachedForecast;
   }
 
+  private String toCompatibleFormat(String query) {
+    // For the current 3rd party library, query must be in upper case
+    return query.toUpperCase();
+  }
 }

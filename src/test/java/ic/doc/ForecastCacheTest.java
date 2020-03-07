@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import com.weather.Forecast;
 import org.junit.Test;
 
 public class ForecastCacheTest {
@@ -21,25 +20,25 @@ public class ForecastCacheTest {
   public void addToCacheIncreasesCacheSizeByOne() {
     assertThat(forecastCache.getCacheSize(), is(0));
     final String[] keys = {"LONDON", "MONDAY"};
-    final Forecast forecast = new Forecast("Mock summary", 25) {};
+    final String testObject = "This is a test object.";
 
-    forecastCache.addToCache(keys, forecast);
+    forecastCache.addToCache(keys, testObject);
     assertThat(forecastCache.getCacheSize(), is(1));
   }
 
   @Test
   public void getFromCacheReturnsTheCorrectForecast() {
     final String[] keys = {"LONDON", "SUNDAY"};
-    final Forecast forecast = new Forecast("Mock summary", 15) {};
-    forecastCache.addToCache(keys, forecast);
-    assertEquals(forecastCache.getFromCache(keys), forecast);
+    final String testObject = "This is a test object.";
+    forecastCache.addToCache(keys, testObject);
+    assertEquals(forecastCache.getFromCache(keys), testObject);
   }
 
   @Test
   public void addingTwoIdenticalKeyValuePairsWillNotOverrideTheFirstEntry() {
     final String[] keys = {"LONDON", "MONDAY"};
-    final Forecast firstForecast = new Forecast("First summary", 25) {};
-    final Forecast secondForecast = new Forecast("Second summary", 12) {};
+    final String firstForecast = "First mock forecast.";
+    final String secondForecast = "Second mock forecast.";
     forecastCache.addToCache(keys, firstForecast);
     forecastCache.addToCache(keys, secondForecast);
     assertThat(forecastCache.getFromCache(keys), is(not(secondForecast)));

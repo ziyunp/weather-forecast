@@ -7,8 +7,8 @@ import com.weather.Region;
 
 /**
  * This class acts as an adapter to the third party forecaster library. It wraps the third party
- * library with the WeatherForecaster interface. Queries will be converted to the compatible
- * format to the 3rd party library here.
+ * library with the WeatherForecaster interface. Queries will be converted to the compatible format
+ * to the 3rd party library here.
  */
 public class ForecasterAdapter implements WeatherForecaster {
 
@@ -19,17 +19,35 @@ public class ForecasterAdapter implements WeatherForecaster {
     this.forecaster = new Forecaster();
   }
 
+  @Override
   public Forecast getForecast(String region, String day) {
-
-    // Convert queries to compatible format
-    region = toCompatibleFormat(region);
-    day = toCompatibleFormat(day);
-
-    return forecaster.forecastFor(Region.valueOf(region), Day.valueOf(day));
+    Region regionQuery = formatRegionQuery(region);
+    Day dayQuery = formatDayQuery(day);
+    if (regionQuery == null || dayQuery == null) {
+      return null;
+    }
+    return forecaster.forecastFor(regionQuery, dayQuery);
   }
 
-  private String toCompatibleFormat(String query) {
-    // For the current 3rd party library, query must be in upper case
-    return query.toUpperCase();
+  private Region formatRegionQuery(String query) {
+    query = query.toUpperCase();
+    Region region = null;
+    try {
+      region = Region.valueOf(query);
+    } catch (IllegalArgumentException e) {
+      System.out.println("Error: The queried region is invalid.");
+    }
+    return region;
+  }
+
+  private Day formatDayQuery(String query) {
+    query = query.toUpperCase();
+    Day day = null;
+    try {
+      day = Day.valueOf(query);
+    } catch (IllegalArgumentException e) {
+      System.out.println("Error: The queried day is invalid.");
+    }
+    return day;
   }
 }

@@ -1,8 +1,7 @@
 package ic.doc;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNull;
 
 import com.weather.Forecast;
 
@@ -17,7 +16,7 @@ public class ForecasterAdapterTest {
     Forecast forecast = adapter.getForecast("LONDON", "MONDAY");
     assertNotNull(forecast);
   }
-  
+
   @Test
   public void nonUpperCaseStringsCanQueryForForecast() {
 
@@ -26,17 +25,16 @@ public class ForecasterAdapterTest {
   }
 
   @Test
-  public void getForecastOfUnavailableRegionWillRaiseException() {
-    try {
-      adapter.getForecast("YORK", "MONDAY");
-      fail("Region not available in Region.class should raise IllegalArgumentException");
-    } catch(IllegalArgumentException e) {}
+  public void returnsNullIfQueriedRegionIsUnavailable() {
+
+    Forecast forecast = adapter.getForecast("YORK", "MONDAY");
+    assertNull(forecast);
   }
+
   @Test
-  public void getForecastOfUnavailableDayWillRaiseException() {
-    try {
-      adapter.getForecast("LONDON", "TODAY");
-      fail("Day not available in Day.class should raise IllegalArgumentException");
-    } catch(IllegalArgumentException e) {}
+  public void returnsNullIfQueriedDayIsUnavailable() {
+
+    Forecast forecast = adapter.getForecast("LONDON", "TODAY");
+    assertNull(forecast);
   }
 }

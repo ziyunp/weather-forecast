@@ -2,7 +2,7 @@ package ic.doc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNull;
 
 import com.weather.Forecast;
 import org.junit.Test;
@@ -25,22 +25,15 @@ public class WeatherForecastTest {
   }
 
   @Test
-  public void exceptionRaisedWhenGetForecastByUnavailableRegion() {
-    try {
-      forecaster.getForecastFor("York", "Monday");
-      fail("Region not available in Region.class should raise IllegalArgumentException");
-    } catch (IllegalArgumentException e) {
-    }
+  public void returnsNullWhenGetForecastByUnavailableRegion() {
+    Forecast forecast = forecaster.getForecastFor("York", "Monday");
+    assertNull(forecast);
   }
 
   @Test
-  public void exceptionRaisedWhenGetForecastByUnavailableDay() {
-    try {
-      forecaster.getForecastFor("London", "Today");
-      fail("Day not available in Day.class should raise IllegalArgumentException");
-    } catch (IllegalArgumentException e) {
-
-    }
+  public void returnsNullWhenGetForecastByUnavailableDay() {
+    Forecast forecast = forecaster.getForecastFor("London", "Today");
+    assertNull(forecast);
   }
 
   @Test

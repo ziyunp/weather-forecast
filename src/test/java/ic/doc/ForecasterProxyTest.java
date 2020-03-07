@@ -1,6 +1,5 @@
 package ic.doc;
 
-import com.weather.Forecast;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
@@ -12,7 +11,7 @@ public class ForecasterProxyTest {
   final String region = "LONDON";
   final String day = "MONDAY";
   final String[] keys = {region, day};
-  final Forecast forecast = new Forecast("Mock summary", 25) {};
+  final String testObject = "This is a test object.";
 
   WeatherForecaster forecaster = context.mock(WeatherForecaster.class);
   Cache cache = context.mock(Cache.class);
@@ -28,8 +27,8 @@ public class ForecasterProxyTest {
             exactly(1).of(cache).getFromCache(keys);
             will(returnValue(null));
             exactly(1).of(forecaster).getForecast(region, day);
-            will(returnValue(forecast));
-            exactly(1).of(cache).addToCache(keys, forecast);
+            will(returnValue(testObject));
+            exactly(1).of(cache).addToCache(keys, testObject);
           }
         });
     forecasterProxy.getForecast(region, day);
@@ -42,7 +41,7 @@ public class ForecasterProxyTest {
         new Expectations() {
           {
             exactly(1).of(cache).getFromCache(keys);
-            will(returnValue(forecast));
+            will(returnValue(testObject));
           }
         });
 

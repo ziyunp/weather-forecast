@@ -1,6 +1,5 @@
 package ic.doc;
 
-import com.weather.Forecast;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import java.util.Map;
  */
 public class ForecastCache implements Cache {
 
-  private LinkedHashMap<String, LinkedHashMap<String, Forecast>> cache;
+  private LinkedHashMap<String, LinkedHashMap<String, Object>> cache;
   private final int cacheCapacity = 10;
 
   public ForecastCache() {
@@ -30,17 +29,15 @@ public class ForecastCache implements Cache {
     String day = (String) keys[1];
 
     if (!cache.containsKey(region)) {
-      cache.put(
-          region,
-          new LinkedHashMap<>());
+      cache.put(region, new LinkedHashMap<>());
     }
     if (!cache.get(region).containsKey(day)) {
-      cache.get(region).put(day, (Forecast)forecast);
+      cache.get(region).put(day, forecast);
     }
   }
 
   @Override
-  public Forecast getFromCache(Object[] keys) {
+  public Object getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];
     if (!cache.containsKey(region) || !cache.get(region).containsKey(day)) {

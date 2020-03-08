@@ -12,33 +12,39 @@ public class WeatherForecastTest {
   @Test
   public void canGetForecastByRegionAndDayWithStringsOfAnyLetterCase() {
 
-    ForecastInfo londonForecast = forecaster.getForecastFor("London", "monDAy");
-    assertNotNull(londonForecast);
-    assertNotNull(londonForecast.summary());
-    assertNotNull(londonForecast.temperature());
+    int londonTemp = forecaster.getTemperature("London", "monDAy");
+    assertNotNull(londonTemp);
 
-    ForecastInfo edinburghForecast = forecaster.getForecastFor("edinburgh", "SUNDAY");
-    assertNotNull(edinburghForecast);
-    assertNotNull(edinburghForecast.summary());
-    assertNotNull(edinburghForecast.temperature());
+    String edinburghSummary = forecaster.getSummary("edinburgh", "sunday");
+    assertNotNull(edinburghSummary);
+
+    String walesSummary = forecaster.getSummary("WALES", "SATURDAY");
+    assertNotNull(walesSummary);
   }
 
   @Test
   public void returnsNullWhenGetForecastByUnavailableRegion() {
-    ForecastInfo forecast = forecaster.getForecastFor("York", "Monday");
-    assertNull(forecast);
+    Integer brightonTemp = forecaster.getTemperature("Brighton", "Saturday");
+    assertNull(brightonTemp);
+    String yorkSummary = forecaster.getSummary("York", "Monday");
+    assertNull(yorkSummary);
   }
 
   @Test
   public void returnsNullWhenGetForecastByUnavailableDay() {
-    ForecastInfo forecast = forecaster.getForecastFor("London", "Today");
-    assertNull(forecast);
+    Integer londonTemp = forecaster.getTemperature("London", "Today");
+    assertNull(londonTemp);
+    String edinburghSummary = forecaster.getSummary("edinburgh", "Yesterday");
+    assertNull(edinburghSummary);
   }
 
   @Test
   public void twoIdenticalConsecutiveQueriesShouldReturnSameForecast() {
-    ForecastInfo walesForecast1 = forecaster.getForecastFor("Wales", "Tuesday");
-    ForecastInfo walesForecast2 = forecaster.getForecastFor("Wales", "Tuesday");
-    assertEquals(walesForecast1, walesForecast2);
+    Integer walesTemp1 = forecaster.getTemperature("Wales", "Tuesday");
+    String walesSummary1 = forecaster.getSummary("wales", "tuesday");
+    Integer walesTemp2 = forecaster.getTemperature("Wales", "Tuesday");
+    String walesSummary2 = forecaster.getSummary("WALES", "TUESDAY");
+    assertEquals(walesTemp1, walesTemp2);
+    assertEquals(walesSummary1, walesSummary2);
   }
 }

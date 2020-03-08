@@ -9,7 +9,7 @@ public class ForecastInfo {
     this.summary = summary;
   }
 
-  public int temperature() {
+  public Integer temperature() {
     return this.temperature;
   }
 

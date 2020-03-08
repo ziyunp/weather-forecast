@@ -1,5 +1,7 @@
 package ic.doc;
 
+import static org.junit.Assert.assertEquals;
+
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
@@ -46,5 +48,63 @@ public class ForecasterProxyTest {
         });
 
     forecasterProxy.getForecast(region, day);
+  }
+
+  @Test
+  public void getTemperatureWillExtractInfoFromFetchedForecastIfQueryIsNotInCache() {
+    context.checking(
+        new Expectations() {
+          {
+            exactly(1).of(cache).getFromCache(keys);
+            will(returnValue(null));
+            exactly(1).of(forecaster).getForecast(region, day);
+            will(returnValue(testObject));
+            exactly(1).of(cache).addToCache(keys, testObject);
+          }
+        });
+    Integer temperature = forecasterProxy.getTemperature(region, day);
+    assertEquals(temperature, testObject.temperature());
+  }
+
+  @Test
+  public void getTemperatureWillExtractInfoFromCachedForecastIfQueryIsInCache() {
+    context.checking(
+        new Expectations() {
+          {
+            exactly(1).of(cache).getFromCache(keys);
+            will(returnValue(testObject));
+          }
+        });
+    Integer temperature = forecasterProxy.getTemperature(region, day);
+    assertEquals(temperature, testObject.temperature());
+  }
+
+  @Test
+  public void getSummaryWillExtractInfoFromFetchedForecastIfQueryIsNotInCache() {
+    context.checking(
+        new Expectations() {
+          {
+            exactly(1).of(cache).getFromCache(keys);
+            will(returnValue(null));
+            exactly(1).of(forecaster).getForecast(region, day);
+            will(returnValue(testObject));
+            exactly(1).of(cache).addToCache(keys, testObject);
+          }
+        });
+    String summary = forecasterProxy.getSummary(region, day);
+    assertEquals(summary, testObject.summary());
+  }
+
+  @Test
+  public void getSummaryWillExtractInfoFromForecastInfoIfQueryIsInCache() {
+    context.checking(
+        new Expectations() {
+          {
+            exactly(1).of(cache).getFromCache(keys);
+            will(returnValue(testObject));
+          }
+        });
+    String summary = forecasterProxy.getSummary(region, day);
+    assertEquals(summary, testObject.summary());
   }
 }

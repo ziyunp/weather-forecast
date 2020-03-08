@@ -6,8 +6,11 @@ public class WeatherForecast {
   private final WeatherForecaster forecaster =
       new ForecasterProxy(new ForecasterAdapter(), new ForecastCache());
 
-  public ForecastInfo getForecastFor(String region, String day) {
-    return forecaster.getForecast(region, day);
+  public Integer getTemperature(String region, String day) {
+    return forecaster.getTemperature(region, day);
   }
 
+  public String getSummary(String region, String day) {
+    return forecaster.getSummary(region, day);
+  }
 }

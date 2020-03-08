@@ -8,10 +8,8 @@ import java.util.TimerTask;
 /**
  * This class is a custom cache to store forecast queries. It limits the size of the cache by
  * removing the eldest entry and schedules to remove a cache item on expiry. The addToCache and
- * getFromCache method
- * perform checks on
- * whether the
- * given keys exist in the cache before calling to Map's 'put' and 'get' methods.
+ * getFromCache method perform checks on whether the given keys exist in the cache before calling to
+ * Map's 'put' and 'get' methods.
  */
 public class ForecastCache implements Cache {
 
@@ -63,9 +61,19 @@ public class ForecastCache implements Cache {
     if (cache.containsKey(region) && cache.get(region).containsKey(day)) {
       cache.get(region).remove(day);
       if (cache.get(region).size() == 0) {
-        cache.get(region).remove(region);
+        cache.remove(region);
       }
     }
+  }
+
+  @Override
+  public int getCacheSize() {
+    return cache.size();
+  }
+
+  @Override
+  public void clearCache() {
+    cache.clear();
   }
 
   private TimerTask scheduleRemove(Object[] keys) {
@@ -75,9 +83,5 @@ public class ForecastCache implements Cache {
         removeCacheItem(keys);
       }
     };
-  }
-
-  public int getCacheSize() {
-    return cache.size();
   }
 }

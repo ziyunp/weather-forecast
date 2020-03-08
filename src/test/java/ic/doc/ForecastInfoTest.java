@@ -9,7 +9,7 @@ public class ForecastInfoTest {
   final Integer testTemp = 26;
   final String testSummary = "Sunny";
   ForecastInfo forecastInfo = new ForecastInfo(testTemp, testSummary);
-  
+
   @Test
   public void canGetStoredTemperatureValue() {
     Integer temperature = forecastInfo.temperature();

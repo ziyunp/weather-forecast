@@ -11,9 +11,10 @@ import java.util.Map;
 public class ForecastCache implements Cache {
 
   private LinkedHashMap<String, LinkedHashMap<String, ForecastInfo>> cache;
-  private final int cacheCapacity = 10;
+  private final int cacheCapacity;
+  private final long cacheExpiry;
 
-  public ForecastCache() {
+  public ForecastCache(int cacheCapacity, long cacheExpiry) {
 
     this.cache =
         new LinkedHashMap<>(cacheCapacity) {
@@ -21,6 +22,8 @@ public class ForecastCache implements Cache {
             return this.size() > cacheCapacity;
           }
         };
+    this.cacheCapacity = cacheCapacity;
+    this.cacheExpiry = cacheExpiry;
   }
 
   @Override
@@ -44,6 +47,22 @@ public class ForecastCache implements Cache {
       return null;
     }
     return cache.get(region).get(day);
+  }
+
+  @Override
+  public void removeCacheItem(Object[] keys) {
+    String region = (String) keys[0];
+    String day = (String) keys[1];
+    if (cache.containsKey(region) && cache.get(region).containsKey(day)) {
+      cache.get(region).remove(day);
+      if (cache.get(region).size() == 0) {
+        cache.get(region).remove(region);
+      }
+    }
+  }
+
+  private void scheduleRemove() {
+
   }
 
   public int getCacheSize() {

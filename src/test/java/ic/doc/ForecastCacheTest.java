@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ForecastCacheTest {
-  final int cacheCapacity = 2;
+  final int cacheCapacity = 5;
   final long hundredSecondsExpiry = 100000;
   ForecastCache forecastCache = new ForecastCache(cacheCapacity, hundredSecondsExpiry);
   final String[] keys = {"LONDON", "MONDAY"};
@@ -20,6 +20,25 @@ public class ForecastCacheTest {
   public void constructorCreatesAnEmptyCache() {
     ForecastCache cache = new ForecastCache(cacheCapacity, hundredSecondsExpiry);
     assertThat(cache.getCacheSize(), is(0));
+  }
+
+  @Test
+  public void getCacheSizeReturnsTheCorrectValue() {
+    final String[] keys1 = {"WALES", "SUNDAY"};
+    final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
+    final String[] keys2 = {"LONDON", "MONDAY"};
+    final ForecastInfo object2 = new ForecastInfo(16, "Forecast of London");
+    final String[] keys3 = {"GLASGOW", "THURSDAY"};
+    final ForecastInfo object3 = new ForecastInfo(16, "Forecast of Glasgow");
+
+    forecastCache.addToCache(keys1, object1);
+    assertThat(forecastCache.getCacheSize(), is(1));
+
+    forecastCache.addToCache(keys2, object2);
+    assertThat(forecastCache.getCacheSize(), is(2));
+
+    forecastCache.addToCache(keys3, object3);
+    assertThat(forecastCache.getCacheSize(), is(3));
   }
 
   @Test
@@ -73,7 +92,10 @@ public class ForecastCacheTest {
   }
 
   @Test
-  public void exceedingCacheCapacityWillRemoveEldestEntry() {
+  public void addItemsMoreThanCacheCapacityWillNotIncreaseCacheSize() {
+    final int smallCacheCapacity = 2;
+    ForecastCache forecastCache = new ForecastCache(smallCacheCapacity, hundredSecondsExpiry);
+
     final String[] keys1 = {"WALES", "SUNDAY"};
     final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
     final String[] keys2 = {"LONDON", "MONDAY"};
@@ -84,20 +106,36 @@ public class ForecastCacheTest {
     forecastCache.addToCache(keys1, object1);
     forecastCache.addToCache(keys2, object2);
 
-    assertThat(forecastCache.getCacheSize(), is(cacheCapacity));
-    assertNotNull(forecastCache.getFromCache(keys1));
-    assertNotNull(forecastCache.getFromCache(keys2));
+    assertThat(forecastCache.getCacheSize(), is(smallCacheCapacity));
 
     forecastCache.addToCache(keys3, object3);
 
-    assertThat(forecastCache.getCacheSize(), is(cacheCapacity));
+    assertThat(forecastCache.getCacheSize(), is(smallCacheCapacity));
+  }
+
+  @Test
+  public void exceedingCacheCapacityWillRemoveEldestEntry() {
+    final int smallCacheCapacity = 2;
+    ForecastCache forecastCache = new ForecastCache(smallCacheCapacity, hundredSecondsExpiry);
+
+    final String[] keys1 = {"WALES", "SUNDAY"};
+    final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
+    final String[] keys2 = {"LONDON", "MONDAY"};
+    final ForecastInfo object2 = new ForecastInfo(16, "Forecast of London");
+    final String[] keys3 = {"GLASGOW", "THURSDAY"};
+    final ForecastInfo object3 = new ForecastInfo(16, "Forecast of Glasgow");
+
+    forecastCache.addToCache(keys1, object1);
+    forecastCache.addToCache(keys2, object2);
+    forecastCache.addToCache(keys3, object3);
+
     assertNull(forecastCache.getFromCache(keys1));
     assertNotNull(forecastCache.getFromCache(keys2));
     assertNotNull(forecastCache.getFromCache(keys3));
   }
 
   @Test
-  public void willRemoveACacheItemOnExpiry() {
+  public void expiredCacheItemWillBeRemoved() {
     final long eightSecondsExpiry = 8000;
     ForecastCache forecastCache = new ForecastCache(cacheCapacity, eightSecondsExpiry);
     forecastCache.addToCache(keys, testObject);
@@ -144,6 +182,5 @@ public class ForecastCacheTest {
 
     assertNull(forecastCache.getFromCache(keys1));
     assertNull(forecastCache.getFromCache(keys2));
-
   }
 }

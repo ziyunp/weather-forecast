@@ -1,11 +1,6 @@
 package ic.doc;
 
-/**
- * This class acts as a gateway before querying to the forecaster. It implements a cache, which
- * stores and returns query results. If a query exists in the cache, the stored result will be
- * returned to the client. Otherwise, it will send the query to the forecaster and store the results
- * in the cache.
- */
+/** This class acts as a gateway that decides whether to query to the third party library. */
 public class ForecasterProxy implements WeatherForecaster {
 
   private final WeatherForecaster forecaster;

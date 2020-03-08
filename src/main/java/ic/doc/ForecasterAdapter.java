@@ -6,9 +6,8 @@ import com.weather.Forecaster;
 import com.weather.Region;
 
 /**
- * This class acts as an adapter to the third party forecaster library. It wraps the third party
- * library with the WeatherForecaster interface and store the fetched Forecast in our own
- * ForecastInfo class. Queries will be converted to the compatible format to the 3rd party library.
+ * This class acts as an adapter to the third party library by converting queries to compatible
+ * format and stores the fetched Forecast object in our own ForecastInfo class.
  */
 public class ForecasterAdapter implements WeatherForecaster {
 

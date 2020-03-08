@@ -6,10 +6,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * This class is a custom cache to store forecast queries. It limits the size of the cache by
- * removing the eldest entry and schedules to remove a cache item on expiry. The addToCache and
- * getFromCache method perform checks on whether the given keys exist in the cache before calling to
- * Map's 'put' and 'get' methods.
+ * This class acts as a custom cache to store forecast queries. It limits the size of the cache by
+ * removing the eldest entry and schedules to remove a cache item on expiry.
  */
 public class ForecastCache implements Cache {
 
@@ -48,10 +46,10 @@ public class ForecastCache implements Cache {
   public Object getFromCache(Object[] keys) {
     String region = (String) keys[0];
     String day = (String) keys[1];
-    if (!cache.containsKey(region) || !cache.get(region).containsKey(day)) {
-      return null;
+    if (cache.containsKey(region) && cache.get(region).containsKey(day)) {
+      return cache.get(region).get(day);
     }
-    return cache.get(region).get(day);
+    return null;
   }
 
   @Override

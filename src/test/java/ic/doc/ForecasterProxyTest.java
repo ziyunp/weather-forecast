@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class ForecasterProxyTest {
+
   @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 
   final String region = "LONDON";
@@ -96,7 +97,7 @@ public class ForecasterProxyTest {
   }
 
   @Test
-  public void getSummaryWillExtractInfoFromForecastInfoIfQueryIsInCache() {
+  public void getSummaryWillExtractInfoFromCachedForecastIfQueryIsInCache() {
     context.checking(
         new Expectations() {
           {

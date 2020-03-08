@@ -1,11 +1,13 @@
 package ic.doc;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
 public class ForecastInfoTest {
+
   final Integer testTemp = 26;
   final String testSummary = "Sunny";
   ForecastInfo forecastInfo = new ForecastInfo(testTemp, testSummary);

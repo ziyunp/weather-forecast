@@ -148,8 +148,8 @@ public class ForecastCacheTest {
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 5 seconds...");
-      Thread.sleep(5000);
+      System.out.println("Sleep for 2 seconds...");
+      Thread.sleep(2000);
     } catch (InterruptedException e) {
     }
     assertNotNull(forecastCache.getFromCache(keys));
@@ -162,8 +162,8 @@ public class ForecastCacheTest {
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 5 seconds...");
-      Thread.sleep(5000);
+      System.out.println("Sleep for 2 seconds...");
+      Thread.sleep(2000);
     } catch (InterruptedException e) {
     }
     assertNotNull(forecastCache.getFromCache(keys));

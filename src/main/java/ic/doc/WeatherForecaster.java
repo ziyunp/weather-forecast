@@ -18,5 +18,5 @@ public interface WeatherForecaster {
       return forecast.summary();
     }
     return null;
-  };
+  }
 }

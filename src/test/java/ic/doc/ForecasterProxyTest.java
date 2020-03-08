@@ -11,7 +11,7 @@ public class ForecasterProxyTest {
   final String region = "LONDON";
   final String day = "MONDAY";
   final String[] keys = {region, day};
-  final String testObject = "This is a test object.";
+  final ForecastInfo testObject = new ForecastInfo(29, "Mock forecast info.");
 
   WeatherForecaster forecaster = context.mock(WeatherForecaster.class);
   Cache cache = context.mock(Cache.class);

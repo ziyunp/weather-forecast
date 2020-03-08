@@ -17,15 +17,15 @@ public class ForecasterProxy implements WeatherForecaster {
   }
 
   @Override
-  public Object getForecast(String region, String day) {
+  public ForecastInfo getForecast(String region, String day) {
 
     // Try querying from cache
     String[] keys = {region, day};
-    Object cachedForecast = cache.getFromCache(keys);
+    ForecastInfo cachedForecast = (ForecastInfo) cache.getFromCache(keys);
 
     if (cachedForecast == null) {
       // If query is not in cache, make a query to forecaster, then add to cache
-      Object fetchedForecast = forecaster.getForecast(region, day);
+      ForecastInfo fetchedForecast = forecaster.getForecast(region, day);
       cache.addToCache(keys, fetchedForecast);
       return fetchedForecast;
     }

@@ -9,6 +9,8 @@ import org.junit.Test;
 
 public class ForecastCacheTest {
   ForecastCache forecastCache = new ForecastCache();
+  final String[] keys = {"LONDON", "MONDAY"};
+  final ForecastInfo testObject = new ForecastInfo(16, "Mock forecast summary");
 
   @Test
   public void constructorCreatesAnEmptyCache() {
@@ -19,17 +21,12 @@ public class ForecastCacheTest {
   @Test
   public void addToCacheIncreasesCacheSizeByOne() {
     assertThat(forecastCache.getCacheSize(), is(0));
-    final String[] keys = {"LONDON", "MONDAY"};
-    final String testObject = "This is a test object.";
-
     forecastCache.addToCache(keys, testObject);
     assertThat(forecastCache.getCacheSize(), is(1));
   }
 
   @Test
   public void getFromCacheReturnsTheCorrectForecast() {
-    final String[] keys = {"LONDON", "SUNDAY"};
-    final String testObject = "This is a test object.";
     forecastCache.addToCache(keys, testObject);
     assertEquals(forecastCache.getFromCache(keys), testObject);
   }
@@ -37,8 +34,8 @@ public class ForecastCacheTest {
   @Test
   public void addingTwoIdenticalKeyValuePairsWillNotOverrideTheFirstEntry() {
     final String[] keys = {"LONDON", "MONDAY"};
-    final String firstForecast = "First mock forecast.";
-    final String secondForecast = "Second mock forecast.";
+    final ForecastInfo firstForecast = new ForecastInfo(10, "First forecast summary");
+    final ForecastInfo secondForecast = new ForecastInfo(16, "Second forecast summary");
     forecastCache.addToCache(keys, firstForecast);
     forecastCache.addToCache(keys, secondForecast);
     assertThat(forecastCache.getFromCache(keys), is(not(secondForecast)));

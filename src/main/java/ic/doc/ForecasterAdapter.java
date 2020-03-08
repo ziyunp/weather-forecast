@@ -7,8 +7,8 @@ import com.weather.Region;
 
 /**
  * This class acts as an adapter to the third party forecaster library. It wraps the third party
- * library with the WeatherForecaster interface. Queries will be converted to the compatible format
- * to the 3rd party library here.
+ * library with the WeatherForecaster interface and store the fetched Forecast in our own
+ * ForecastInfo class. Queries will be converted to the compatible format to the 3rd party library.
  */
 public class ForecasterAdapter implements WeatherForecaster {
 
@@ -20,13 +20,14 @@ public class ForecasterAdapter implements WeatherForecaster {
   }
 
   @Override
-  public Forecast getForecast(String region, String day) {
+  public ForecastInfo getForecast(String region, String day) {
     Region regionQuery = formatRegionQuery(region);
     Day dayQuery = formatDayQuery(day);
     if (regionQuery == null || dayQuery == null) {
       return null;
     }
-    return forecaster.forecastFor(regionQuery, dayQuery);
+    Forecast forecast = forecaster.forecastFor(regionQuery, dayQuery);
+    return new ForecastInfo(forecast.temperature(), forecast.summary());
   }
 
   private Region formatRegionQuery(String query) {

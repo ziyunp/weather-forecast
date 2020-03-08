@@ -13,28 +13,28 @@ public class ForecasterAdapterTest {
 
   @Test
   public void getForecastWillReturnAForecastObject() {
-    Forecast forecast = adapter.getForecast("LONDON", "MONDAY");
+    ForecastInfo forecast = adapter.getForecast("LONDON", "MONDAY");
     assertNotNull(forecast);
   }
 
   @Test
   public void nonUpperCaseStringsCanQueryForForecast() {
 
-    Forecast forecast = adapter.getForecast("London", "monday");
+    ForecastInfo forecast = adapter.getForecast("London", "monday");
     assertNotNull(forecast);
   }
 
   @Test
   public void returnsNullIfQueriedRegionIsUnavailable() {
 
-    Forecast forecast = adapter.getForecast("YORK", "MONDAY");
+    ForecastInfo forecast = adapter.getForecast("YORK", "MONDAY");
     assertNull(forecast);
   }
 
   @Test
   public void returnsNullIfQueriedDayIsUnavailable() {
 
-    Forecast forecast = adapter.getForecast("LONDON", "TODAY");
+    ForecastInfo forecast = adapter.getForecast("LONDON", "TODAY");
     assertNull(forecast);
   }
 }

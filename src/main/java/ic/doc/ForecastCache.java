@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class ForecastCache implements Cache {
 
-  private LinkedHashMap<String, LinkedHashMap<String, Object>> cache;
+  private LinkedHashMap<String, LinkedHashMap<String, ForecastInfo>> cache;
   private final int cacheCapacity = 10;
 
   public ForecastCache() {
@@ -32,7 +32,7 @@ public class ForecastCache implements Cache {
       cache.put(region, new LinkedHashMap<>());
     }
     if (!cache.get(region).containsKey(day)) {
-      cache.get(region).put(day, forecast);
+      cache.get(region).put(day, (ForecastInfo) forecast);
     }
   }
 

@@ -23,7 +23,7 @@ public class ForecastCacheTest {
   }
 
   @Test
-  public void getCacheSizeReturnsTheCorrectValue() {
+  public void addToCacheIncreasesCacheSizeByOne() {
     final String[] keys1 = {"WALES", "SUNDAY"};
     final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
     final String[] keys2 = {"LONDON", "MONDAY"};
@@ -39,13 +39,6 @@ public class ForecastCacheTest {
 
     forecastCache.addToCache(keys3, object3);
     assertThat(forecastCache.getCacheSize(), is(3));
-  }
-
-  @Test
-  public void addToCacheIncreasesCacheSizeByOne() {
-    assertThat(forecastCache.getCacheSize(), is(0));
-    forecastCache.addToCache(keys, testObject);
-    assertThat(forecastCache.getCacheSize(), is(1));
   }
 
   @Test
@@ -136,13 +129,13 @@ public class ForecastCacheTest {
 
   @Test
   public void expiredCacheItemWillBeRemoved() {
-    final long eightSecondsExpiry = 8000;
-    ForecastCache forecastCache = new ForecastCache(cacheCapacity, eightSecondsExpiry);
+    final long fiveSecondsExpiry = 5000;
+    ForecastCache forecastCache = new ForecastCache(cacheCapacity, fiveSecondsExpiry);
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 10 seconds...");
-      Thread.sleep(10000);
+      System.out.println("Sleep for 8 seconds...");
+      Thread.sleep(8000);
     } catch (InterruptedException e) {
     }
     assertNull(forecastCache.getFromCache(keys));

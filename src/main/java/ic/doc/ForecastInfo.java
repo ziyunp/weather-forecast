@@ -11,10 +11,12 @@ public class ForecastInfo {
   }
 
   public Integer temperature() {
+
     return this.temperature;
   }
 
   public String summary() {
+
     return this.summary;
   }
 }

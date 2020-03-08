@@ -13,10 +13,12 @@ public class WeatherForecast {
       new ForecasterProxy(new ForecasterAdapter(), new ForecastCache(cacheCapacity, cacheExpiry));
 
   public Integer getTemperature(String region, String day) {
+
     return forecaster.getTemperature(region, day);
   }
 
   public String getSummary(String region, String day) {
+
     return forecaster.getSummary(region, day);
   }
 }

@@ -2,10 +2,15 @@ package ic.doc;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This class is a custom cache to store forecast queries. It limits the size of the cache by
- * removing the eldest entry. The addToCache and getFromCache method perform checks on whether the
+ * removing the eldest entry and schedules to remove a cache item on expiry. The addToCache and
+ * getFromCache method
+ * perform checks on
+ * whether the
  * given keys exist in the cache before calling to Map's 'put' and 'get' methods.
  */
 public class ForecastCache implements Cache {
@@ -36,6 +41,8 @@ public class ForecastCache implements Cache {
     }
     if (!cache.get(region).containsKey(day)) {
       cache.get(region).put(day, (ForecastInfo) forecast);
+      Timer timer = new Timer();
+      timer.schedule(scheduleRemove(keys), cacheExpiry);
     }
   }
 
@@ -61,8 +68,13 @@ public class ForecastCache implements Cache {
     }
   }
 
-  private void scheduleRemove() {
-
+  private TimerTask scheduleRemove(Object[] keys) {
+    return new TimerTask() {
+      @Override
+      public void run() {
+        removeCacheItem(keys);
+      }
+    };
   }
 
   public int getCacheSize() {

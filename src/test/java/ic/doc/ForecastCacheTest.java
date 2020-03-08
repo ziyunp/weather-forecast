@@ -10,15 +10,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ForecastCacheTest {
-  final int cacheCapacity = 3;
-  final long cacheExpiry = 10000;
-  ForecastCache forecastCache = new ForecastCache(cacheCapacity, cacheExpiry);
+  final int cacheCapacity = 2;
+  final long hundredSecondsExpiry = 100000;
+  ForecastCache forecastCache = new ForecastCache(cacheCapacity, hundredSecondsExpiry);
   final String[] keys = {"LONDON", "MONDAY"};
   final ForecastInfo testObject = new ForecastInfo(16, "Mock forecast summary");
 
   @Test
   public void constructorCreatesAnEmptyCache() {
-    ForecastCache cache = new ForecastCache(cacheCapacity, cacheExpiry);
+    ForecastCache cache = new ForecastCache(cacheCapacity, hundredSecondsExpiry);
     assertThat(cache.getCacheSize(), is(0));
   }
 
@@ -48,9 +48,6 @@ public class ForecastCacheTest {
 
   @Test
   public void exceedingCacheCapacityWillRemoveEldestEntry() {
-    final int cacheCapacity = 2;
-    final long cacheExpiry = 100000;
-    ForecastCache forecastCache = new ForecastCache(cacheCapacity, cacheExpiry);
     final String[] keys1 = {"WALES", "SUNDAY"};
     final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
     final String[] keys2 = {"LONDON", "MONDAY"};
@@ -71,5 +68,19 @@ public class ForecastCacheTest {
     assertNull(forecastCache.getFromCache(keys1));
     assertNotNull(forecastCache.getFromCache(keys2));
     assertNotNull(forecastCache.getFromCache(keys3));
+  }
+
+  @Test
+  public void willRemoveACacheItemOnExpiry() {
+    final long eightSecondsExpiry = 8000;
+    ForecastCache forecastCache = new ForecastCache(cacheCapacity, eightSecondsExpiry);
+    forecastCache.addToCache(keys, testObject);
+    assertNotNull(forecastCache.getFromCache(keys));
+    try {
+      System.out.println("Sleep for 10 seconds...");
+      Thread.sleep(10000);
+    } catch (InterruptedException e) {
+    }
+    assertNull(forecastCache.getFromCache(keys));
   }
 }

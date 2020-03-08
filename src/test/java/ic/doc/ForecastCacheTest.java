@@ -129,13 +129,13 @@ public class ForecastCacheTest {
 
   @Test
   public void expiredCacheItemWillBeRemoved() {
-    final long fiveSecondsExpiry = 5000;
-    ForecastCache forecastCache = new ForecastCache(cacheCapacity, fiveSecondsExpiry);
+    final long threeSecondsExpiry = 3000;
+    ForecastCache forecastCache = new ForecastCache(cacheCapacity, threeSecondsExpiry);
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 8 seconds...");
-      Thread.sleep(8000);
+      System.out.println("Sleep for 5 seconds...");
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
     }
     assertNull(forecastCache.getFromCache(keys));
@@ -148,8 +148,8 @@ public class ForecastCacheTest {
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 8 seconds...");
-      Thread.sleep(8000);
+      System.out.println("Sleep for 5 seconds...");
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
     }
     assertNotNull(forecastCache.getFromCache(keys));
@@ -162,8 +162,8 @@ public class ForecastCacheTest {
     forecastCache.addToCache(keys, testObject);
     assertNotNull(forecastCache.getFromCache(keys));
     try {
-      System.out.println("Sleep for 8 seconds...");
-      Thread.sleep(8000);
+      System.out.println("Sleep for 5 seconds...");
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
     }
     assertNotNull(forecastCache.getFromCache(keys));

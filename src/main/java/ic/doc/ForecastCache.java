@@ -37,8 +37,10 @@ public class ForecastCache implements Cache {
     }
     if (!cache.get(region).containsKey(day)) {
       cache.get(region).put(day, (ForecastInfo) forecast);
-      Timer timer = new Timer();
-      timer.schedule(scheduleRemove(keys), cacheExpiry);
+      if (cacheExpiry > 0) {
+        Timer timer = new Timer();
+        timer.schedule(scheduleRemove(keys), cacheExpiry);
+      }
     }
   }
 

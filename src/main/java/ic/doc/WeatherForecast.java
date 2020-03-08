@@ -1,6 +1,9 @@
 package ic.doc;
 
-/** This is the main client that users will be interacting with. */
+/**
+ * This is the main client that users will be interacting with. User can deactivate the removal of
+ * cache item on expiry by setting cacheExpiry to zero or a negative value.
+ */
 public class WeatherForecast {
 
   private final int cacheCapacity = 10;

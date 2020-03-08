@@ -142,6 +142,34 @@ public class ForecastCacheTest {
   }
 
   @Test
+  public void zeroCacheExpiryWillNotRemoveCacheItem() {
+    final long zeroExpiry = 0;
+    ForecastCache forecastCache = new ForecastCache(cacheCapacity, zeroExpiry);
+    forecastCache.addToCache(keys, testObject);
+    assertNotNull(forecastCache.getFromCache(keys));
+    try {
+      System.out.println("Sleep for 8 seconds...");
+      Thread.sleep(8000);
+    } catch (InterruptedException e) {
+    }
+    assertNotNull(forecastCache.getFromCache(keys));
+  }
+
+  @Test
+  public void negativeCacheExpiryWillNotRemoveCacheItem() {
+    final long negativeExpiry = -1;
+    ForecastCache forecastCache = new ForecastCache(cacheCapacity, negativeExpiry);
+    forecastCache.addToCache(keys, testObject);
+    assertNotNull(forecastCache.getFromCache(keys));
+    try {
+      System.out.println("Sleep for 8 seconds...");
+      Thread.sleep(8000);
+    } catch (InterruptedException e) {
+    }
+    assertNotNull(forecastCache.getFromCache(keys));
+  }
+
+  @Test
   public void clearCacheSetsCacheSizeToZero() {
     final String[] keys1 = {"WALES", "SUNDAY"};
     final ForecastInfo object1 = new ForecastInfo(10, "Forecast of Wales");
